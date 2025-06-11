@@ -1,0 +1,777 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA: ¿Estás Preparado? ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .scale-up {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+        .option-selected {
+            background-color: #3B82F6 !important;
+            color: white !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .urgency-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-50 text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- Encabezado -->
+        <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-8 shadow-lg">
+            <div class="container mx-auto px-4 text-center">
+                <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <span class="text-3xl">🤖</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold mb-2">IA: ¿Estás Preparado?</h1>
+                <p class="text-lg opacity-90">Descubre cómo la Inteligencia Artificial afectará tu futuro económico</p>
+            </div>
+        </header>
+
+        <!-- Progreso -->
+        <div class="container mx-auto px-4 py-4">
+            <div class="bg-white rounded-lg shadow p-1">
+                <div id="progress-bar" class="h-3 rounded-full bg-blue-200 w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- Pantalla de inicio -->
+            <div id="start-screen" class="max-w-3xl mx-auto text-center fade-in">
+                <div class="bg-white rounded-xl shadow-lg p-8 mb-8 border border-gray-100">
+                    <span class="text-6xl mb-6 block">🚀</span>
+                    <h2 class="text-2xl font-bold mb-4">¿Listo para evaluar tu futuro en la era de la IA?</h2>
+                    <p class="text-gray-600 mb-8">Este cuestionario de 30 preguntas revelará cómo la Inteligencia Artificial impactará tus metas económicas y profesionales. Al final recibirás un diagnóstico personalizado y acciones concretas.</p>
+                    <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow transition-all transform hover:scale-105">
+                        Comenzar ahora →
+                    </button>
+                </div>
+                <div class="flex justify-center space-x-4 text-gray-500 text-sm">
+                    <span><i class="fas fa-clock mr-1"></i> 5 minutos</span>
+                    <span><i class="fas fa-lock mr-1"></i> Privado</span>
+                    <span><i class="fas fa-star mr-1"></i> Personalizado</span>
+                </div>
+            </div>
+
+            <!-- Cuestionario -->
+            <div id="quiz-container" class="hidden max-w-2xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <!-- Pregunta -->
+                    <div id="question-container" class="p-6 pb-1">
+                        <div class="flex items-center mb-6">
+                            <span id="question-number" class="bg-blue-100 text-blue-700 font-bold rounded-full w-10 h-10 flex items-center justify-center">1</span>
+                            <h2 id="question-text" class="text-xl font-semibold ml-3 leading-tight"></h2>
+                            <span id="question-emoji" class="ml-auto text-2xl"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Opciones -->
+                    <div id="options-container" class="px-6 pb-6 space-y-3">
+                        <!-- Las opciones se generan dinámicamente aquí -->
+                    </div>
+                    
+                    <!-- Navegación -->
+                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-between items-center">
+                        <button id="prev-btn" onclick="previousQuestion()" class="text-gray-600 hover:text-blue-700 font-medium py-2 px-4 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                            ← Anterior
+                        </button>
+                        <span class="text-sm text-gray-500 hidden md:inline">Presiona <strong>Enter</strong> para continuar</span>
+                        <button id="next-btn" onclick="nextQuestion()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg shadow">
+                            Siguiente →
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Progreso numérico -->
+                <div class="text-center mt-4 text-sm text-gray-500">
+                    Pregunta <span id="current-q">1</span> de <span id="total-q">30</span>
+                </div>
+            </div>
+
+            <!-- Resultados -->
+            <div id="results-screen" class="hidden max-w-3xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden fade-in">
+                    <div class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white py-8 px-6 text-center">
+                        <div class="w-16 h-16 bg-white bg-opacity-30 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <span class="text-2xl">🎯</span>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-2">Tu evaluación está lista</h2>
+                        <p class="opacity-90">Basado en tus respuestas, esta es tu preparación para la era de la IA</p>
+                    </div>
+                    
+                    <div class="p-6 md:p-8">
+                        <!-- Resultado principal -->
+                        <div id="result-level" class="text-center mb-8">
+                            <div id="urgency-alert" class="urgency-pulse inline-block bg-red-500 text-white text-sm font-semibold px-4 py-2 rounded-full mb-4">
+                                ¡Debes actuar ahora!
+                            </div>
+                            <h3 id="result-title" class="text-xl font-bold mb-2"></h3>
+                            <div id="result-progress" class="w-full bg-gray-200 rounded-full h-4 mb-6">
+                                <div id="progress-fill" class="h-4 rounded-full"></div>
+                            </div>
+                            <p id="result-description" class="text-gray-700"></p>
+                        </div>
+                        
+                        <!-- Recomendaciones -->
+                        <div class="mb-8">
+                            <h3 class="font-semibold text-lg mb-3 flex items-center">
+                                <span class="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center mr-2">1</span>
+                                Tus áreas clave para mejorar
+                            </h3>
+                            <ul id="improvement-areas" class="space-y-2 text-gray-700">
+                                <!-- Dinámico -->
+                            </ul>
+                        </div>
+                        
+                        <!-- Acciones -->
+                        <div class="mb-8">
+                            <h3 class="font-semibold text-lg mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center mr-2">2</span>
+                                Acciones inmediatas recomendadas
+                            </h3>
+                            <div id="action-steps" class="grid md:grid-cols-2 gap-4">
+                                <!-- Dinámico -->
+                            </div>
+                        </div>
+                        
+                        <!-- Recursos -->
+                        <div class="bg-blue-50 rounded-xl p-5 mb-6">
+                            <h3 class="font-semibold text-lg mb-3 flex items-center text-blue-800">
+                                <span class="bg-blue-200 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center mr-2">3</span>
+                                Recursos para empezar hoy
+                            </h3>
+                            <div id="resources" class="space-y-3">
+                                <!-- Dinámico -->
+                            </div>
+                        </div>
+                        
+                        <!-- CTA Final -->
+                        <div class="text-center">
+                            <button onclick="restartQuiz()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-all transform hover:scale-105 inline-flex items-center mr-4">
+                                <i class="fas fa-redo mr-2"></i> Repetir cuestionario
+                            </button>
+                            <button onclick="window.print()" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-3 px-8 rounded-lg shadow transition-all inline-flex items-center">
+                                <i class="fas fa-download mr-2"></i> Guardar PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Pie -->
+        <footer class="bg-white border-t border-gray-200 py-6">
+            <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+                <p>Este cuestionario es una herramienta de autoevaluación. Tu privacidad es importante - no almacenamos tus respuestas.</p>
+                <p class="mt-1">© 2023 - Futuro con IA</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Variables del cuestionario
+        let currentQuestion = 0;
+        let answers = [];
+        let score = 0;
+        let maxPossibleScore = 0;
+        
+        // Configuración del cuestionario
+        const questions = [
+            {
+                emoji: "💰",
+                question: "¿Qué porcentaje de tus ingresos actuales consideras vulnerable a la automatización en los próximos 5 años?",
+                options: [
+                    { text: "Menos del 20% - Mi trabajo es altamente creativo/gestiono equipos", value: 3 },
+                    { text: "20-50% - Algunas tareas podrían automatizarse", value: 2 },
+                    { text: "Más del 50% - Mi trabajo es muy repetitivo o basado en datos", value: 1 },
+                    { text: "No estoy seguro - No he pensado en esto", value: 0 }
+                ]
+            },
+            {
+                emoji: "🏆",
+                question: "¿Cuál es tu principal objetivo financiero para los próximos 10 años?",
+                options: [
+                    { text: "Independencia financiera completa", value: 3 },
+                    { text: "Estabilidad económica sin preocupaciones", value: 2 },
+                    { text: "Mantener mi estilo de vida actual", value: 1 },
+                    { text: "Sobrevivir mes a mes", value: 0 }
+                ]
+            },
+            {
+                emoji: "🤖",
+                question: "¿Con qué frecuencia usas herramientas de IA en tu trabajo o vida diaria?",
+                options: [
+                    { text: "Diariamente - Es parte fundamental de mis procesos", value: 3 },
+                    { text: "Semanalmente - Para algunas tareas específicas", value: 2 },
+                    { text: "Raramente - No estoy familiarizado", value: 1 },
+                    { text: "Nunca - No sé cómo aplicarla", value: 0 }
+                ]
+            },
+            {
+                emoji: "📈",
+                question: "¿Cómo crees que la IA afectará tu sector profesional en la próxima década?",
+                options: [
+                    { text: "Creará más oportunidades que amenazas", value: 3 },
+                    { text: "Cambiará el sector pero podré adaptarme", value: 2 },
+                    { text: "Eliminará muchos puestos como el mío", value: 1 },
+                    { text: "No tengo idea - No sigo estas tendencias", value: 0 }
+                ]
+            },
+            {
+                emoji: "⏳",
+                question: "¿Cuántas horas a la semana dedicas actualmente a aprender sobre IA o habilidades complementarias?",
+                options: [
+                    { text: "Más de 5 horas - Es una prioridad para mí", value: 3 },
+                    { text: "2-5 horas - Trato de mantenerme actualizado", value: 2 },
+                    { text: "Menos de 2 horas - No tengo mucho tiempo", value: 1 },
+                    { text: "Cero horas - Otras cosas son más importantes", value: 0 }
+                ]
+            },
+            {
+                emoji: "🌐",
+                question: "¿Qué nivel de comprensión tienes sobre cómo funcionan los sistemas de IA?",
+                options: [
+                    { text: "Avanzado - Puedo explicar algoritmos básicos", value: 3 },
+                    { text: "Intermedio - Entiendo los conceptos fundamentales", value: 2 },
+                    { text: "Básico - Sé lo que veo en las noticias", value: 1 },
+                    { text: "Ninguno - Es demasiado técnico para mí", value: 0 }
+                ]
+            },
+            {
+                emoji: "🏦",
+                question: "¿Cómo te imaginas que la IA transformará la forma en que manejas tus finanzas personales?",
+                options: [
+                    { text: "Tendré asesores financieros de IA personalizados 24/7", value: 3 },
+                    { text: "Usaré algunas herramientas de análisis automatizadas", value: 2 },
+                    { text: "Poco - Seguiré haciéndolo como ahora", value: 1 },
+                    { text: "No veo la relación entre IA y mis finanzas", value: 0 }
+                ]
+            },
+            {
+                emoji: "💼",
+                question: "Si tu trabajo actual desaparece por la automatización, ¿qué tan preparado estás para pivotar?",
+                options: [
+                    { text: "Muy preparado - Tengo múltiples habilidades digitales", value: 3 },
+                    { text: "Algo preparado - Podría aprender algo nuevo", value: 2 },
+                    { text: "Poco preparado - Me costaría mucho", value: 1 },
+                    { text: "Nada preparado - No sé qué haría", value: 0 }
+                ]
+            },
+            {
+                emoji: "🧠",
+                question: "¿Qué tan importante crees que será comprender la IA para mantenerte relevante en el mercado laboral?",
+                options: [
+                    { text: "Crítico - Quien no lo haga quedará obsoleto", value: 3 },
+                    { text: "Importante - Dará ventaja competitiva", value: 2 },
+                    { text: "Interesante pero no esencial", value: 1 },
+                    { text: "Irrelevante - Mi sector no requiere esto", value: 0 }
+                ]
+            },
+            {
+                emoji: "🔍",
+                question: "¿Has identificado oportunidades de negocio que podrían surgir gracias a la IA?",
+                options: [
+                    { text: "Sí, varias - Y estoy evaluando cómo aprovecharlas", value: 3 },
+                    { text: "Alguna vaga idea - Pero no la he desarrollado", value: 2 },
+                    { text: "No, pero me gustaría encontrar alguna", value: 1 },
+                    { text: "No veo ninguna oportunidad en esto", value: 0 }
+                ]
+            },
+            {
+                emoji: "🧩",
+                question: "¿Qué habilidades relacionadas con la IA has desarrollado o estás desarrollando?",
+                options: [
+                    { text: "Programación en IA/ML y análisis de datos avanzado", value: 3 },
+                    { text: "Uso de herramientas de IA para productividad", value: 2 },
+                    { text: "Conocimientos básicos sobre el tema", value: 1 },
+                    { text: "Ninguna en absoluto", value: 0 }
+                ]
+            },
+            {
+                emoji: "🌉",
+                question: "¿Qué tanto consideras que la IA aumentará la brecha económica entre quienes la dominan y quienes no?",
+                options: [
+                    { text: "Dramáticamente - Será la mayor brecha de nuestra era", value: 3 },
+                    { text: "Significativamente - Pero no insalvable", value: 2 },
+                    { text: "Moderadamente - Como con otras tecnologías", value: 1 },
+                    { text: "Mínimamente - No creo que sea importante", value: 0 }
+                ]
+            },
+            {
+                emoji: "🛡️",
+                question: "¿Qué medidas has tomado para proteger tu situación económica de posibles disrupciones por IA?",
+                options: [
+                    { text: "Diversifiqué ingresos y desarrollo habilidades IA", value: 3 },
+                    { text: "Estoy ahorrando más para eventualidades", value: 2 },
+                    { text: "Ninguna específica para IA", value: 1 },
+                    { text: "¿Por qué necesitaría protección contra esto?", value: 0 }
+                ]
+            },
+            {
+                emoji: "📊",
+                question: "¿Cómo evalúas tu capacidad actual para interpretar datos y tomar decisiones basadas en ellos?",
+                options: [
+                    { text: "Excelente - Uso análisis avanzado constantemente", value: 3 },
+                    { text: "Buena - Puedo trabajar con datos básicos", value: 2 },
+                    { text: "Limitada - Prefiero la intuición", value: 1 },
+                    { text: "Muy pobre - Los datos me confunden", value: 0 }
+                ]
+            },
+            {
+                emoji: "🧭",
+                question: "¿Tienes un plan claro sobre cómo integrar el conocimiento de IA en tu desarrollo profesional?",
+                options: [
+                    { text: "Sí, con metas y plazos definidos", value: 3 },
+                    { text: "Una idea general pero sin estructura", value: 2 },
+                    { text: "No, pero sé que debería tenerlo", value: 1 },
+                    { text: "No creo necesitar tal plan", value: 0 }
+                ]
+            },
+            {
+                emoji: "🚪",
+                question: "¿Qué tan abierto estás a cambiar completamente de carrera si la IA hace obsoleto tu campo?",
+                options: [
+                    { text: "Totalmente - Ya estoy explorando alternativas", value: 3 },
+                    { text: "Si es necesario, pero preferiría no hacerlo", value: 2 },
+                    { text: "Sería muy difícil para mí", value: 1 },
+                    { text: "Me negaría rotundamente", value: 0 }
+                ]
+            },
+            {
+                emoji: "📱",
+                question: "¿Qué tipo de herramientas de productividad con IA usas actualmente?",
+                options: [
+                    { text: "Asistentes avanzados, automatización compleja", value: 3 },
+                    { text: "Chatbots, editores con IA básicos", value: 2 },
+                    { text: "Quizás alguna sin darme cuenta", value: 1 },
+                    { text: "Ninguna que yo sepa", value: 0 }
+                ]
+            },
+            {
+                emoji: "🚀",
+                question: "Si tuvieras que seleccionar una nueva habilidad para aprender este año, ¿cuál elegirías?",
+                options: [
+                    { text: "Programación de sistemas de IA", value: 3 },
+                    { text: "Uso aplicado de herramientas de IA", value: 2 },
+                    { text: "Algo no técnico pero complementario", value: 1 },
+                    { text: "Nada relacionado con tecnología", value: 0 }
+                ]
+            },
+            {
+                emoji: "🔮",
+                question: "¿En qué medida crees que tu sueño profesional/personal se verá afectado por los avances en IA?",
+                options: [
+                    { text: "Positivamente - Podré lograrlo antes o mejor", value: 3 },
+                    { text: "Neutralmente - No habrá gran impacto", value: 2 },
+                    { text: "Negativamente - Tal vez no sea posible", value: 1 },
+                    { text: "No tengo sueños profesionales definidos", value: 0 }
+                ]
+            },
+            {
+                emoji: "💡",
+                question: "¿Has experimentado una 'revelación' sobre cómo la IA podría cambiar fundamentalmente tu enfoque de vida/trabajo?",
+                options: [
+                    { text: "Sí, y ya estoy actuando en consecuencia", value: 3 },
+                    { text: "Alguna intuición, pero no clara aún", value: 2 },
+                    { text: "No, pero estoy abierto a esa posibilidad", value: 1 },
+                    { text: "No, y no veo por qué necesitaría una", value: 0 }
+                ]
+            },
+            {
+                emoji: "🧗",
+                question: "¿Estás dispuesto a salir de tu zona de confort para aprender sobre IA?",
+                options: [
+                    { text: "Totalmente - Ya lo estoy haciendo", value: 3 },
+                    { text: "Hasta cierto punto", value: 2 },
+                    { text: "Preferiría no hacerlo", value: 1 },
+                    { text: "Definitivamente no", value: 0 }
+                ]
+            },
+            {
+                emoji: "📚",
+                question: "¿Qué tipo de recursos has utilizado para aprender sobre IA?",
+                options: [
+                    { text: "Cursos técnicos y proyectos prácticos", value: 3 },
+                    { text: "Libros/artículos no técnicos y videos", value: 2 },
+                    { text: "Solo lo que aparece en medios generales", value: 1 },
+                    { text: "Ninguno", value: 0 }
+                ]
+            },
+            {
+                emoji: "🤝",
+                question: "¿Qué tan conectado estás con personas que dominan la IA y pueden guiarte?",
+                options: [
+                    { text: "Tengo una red sólida en este ámbito", value: 3 },
+                    { text: "Algunos contactos, pero no cercanos", value: 2 },
+                    { text: "Muy pocos, si acaso", value: 1 },
+                    { text: "Ninguno", value: 0 }
+                ]
+            },
+            {
+                emoji: "⏱️",
+                question: "¿Con qué frecuencia piensas activamente en cómo la IA afectará tu futuro?",
+                options: [
+                    { text: "Diariamente - Es parte de mi planificación", value: 3 },
+                    { text: "Semanalmente - Me mantiene alerta", value: 2 },
+                    { text: "Ocasionalmente - Cuando algo me lo recuerda", value: 1 },
+                    { text: "Nunca - No es algo que considere", value: 0 }
+                ]
+            },
+            {
+                emoji: "🧘",
+                question: "Ante la disrupción de la IA, ¿cuál es tu actitud predominante?",
+                options: [
+                    { text: "Entusiasmo - Veo infinitas oportunidades", value: 3 },
+                    { text: "Preocupación pero con esperanza", value: 2 },
+                    { text: "Ansiedad - No me siento preparado", value: 1 },
+                    { text: "Indiferencia - No me afectará", value: 0 }
+                ]
+            },
+            {
+                emoji: "🏡",
+                question: "¿Cómo imaginas que la IA afectará tus planes de jubilación?",
+                options: [
+                    { text: "Positivamente - Podré jubilarme antes", value: 3 },
+                    { text: "Neutral - No cambiará mucho mis planes", value: 2 },
+                    { text: "Negativamente - Tendré que trabajar más años", value: 1 },
+                    { text: "No tengo planes de jubilación", value: 0 }
+                ]
+            },
+            {
+                emoji: "🎯",
+                question: "¿Qué esperas lograr aprendiendo sobre IA en los próximos 12 meses?",
+                options: [
+                    { text: "Implementar soluciones concretas en mi trabajo", value: 3 },
+                    { text: "Comprender mejor el panorama general", value: 2 },
+                    { text: "Al menos familiarizarme con los conceptos", value: 1 },
+                    { text: "Nada en particular", value: 0 }
+                ]
+            },
+            {
+                emoji: "🔥",
+                question: "¿Qué nivel de urgencia sientes respecto a prepararte para la era de la IA?",
+                options: [
+                    { text: "Crítica - Es mi prioridad número uno", value: 3 },
+                    { text: "Alta - Debo empezar pronto", value: 2 },
+                    { text: "Moderada - Puede esperar un tiempo", value: 1 },
+                    { text: "Ninguna - No es importante para mí", value: 0 }
+                ]
+            }
+        ];
+
+        // Iniciar cuestionario
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            showQuestion();
+            
+            // Configurar eventos de teclado
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    if (document.getElementById('next-btn').disabled === false) {
+                        nextQuestion();
+                    }
+                }
+                
+                // Permitir selección con números 1-4
+                if (e.key >= '1' && e.key <= '4' && currentQuestion < questions.length) {
+                    const optionIndex = parseInt(e.key) - 1;
+                    if (optionIndex < questions[currentQuestion].options.length) {
+                        selectOption(optionIndex);
+                        nextQuestion();
+                    }
+                }
+            });
+        }
+
+        // Mostrar pregunta actual
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question-text').textContent = question.question;
+            document.getElementById('question-emoji').textContent = question.emoji;
+            document.getElementById('question-number').textContent = currentQuestion + 1;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-800 p-4 rounded-lg border border-gray-200 transition-all';
+                optionElement.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="bg-gray-200 text-gray-700 rounded-full w-6 h-6 flex items-center justify-center mr-3 font-medium">${index + 1}</span>
+                        <span>${option.text}</span>
+                    </div>
+                `;
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar progreso
+            updateProgress();
+            
+            // Actualizar navegación
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').disabled = answers[currentQuestion] === undefined;
+            
+            // Actualizar contadores
+            document.getElementById('current-q').textContent = currentQuestion + 1;
+            document.getElementById('total-q').textContent = questions.length;
+        }
+
+        // Seleccionar una opción
+        function selectOption(index) {
+            // Deseleccionar todas las opciones primero
+            const options = document.querySelectorAll('#options-container > div');
+            options.forEach(option => {
+                option.classList.remove('option-selected');
+            });
+            
+            // Seleccionar la opción clickeada
+            options[index].classList.add('option-selected');
+            
+            // Guardar respuesta
+            answers[currentQuestion] = index;
+            
+            // Habilitar el botón siguiente
+            document.getElementById('next-btn').disabled = false;
+        }
+
+        // Pregunta anterior
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        // Siguiente pregunta
+        function nextQuestion() {
+            if (answers[currentQuestion] !== undefined) {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                } else {
+                    calculateResults();
+                    showResults();
+                }
+            }
+        }
+
+        // Actualizar barra de progreso
+        function updateProgress() {
+            const progress = (currentQuestion / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+        }
+
+        // Calcular resultados
+        function calculateResults() {
+            score = 0;
+            maxPossibleScore = 0;
+            
+            questions.forEach((question, index) => {
+                const answerIndex = answers[index];
+                if (answerIndex !== undefined) {
+                    score += question.options[answerIndex].value;
+                }
+                maxPossibleScore += 3; // El valor máximo posible por pregunta
+            });
+        }
+
+        // Mostrar resultados
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+            
+            const percentage = (score / maxPossibleScore) * 100;
+            document.getElementById('progress-fill').style.width = `${percentage}%`;
+            
+            // Determinar nivel de preparación
+            let resultTitle, resultDescription, progressColor;
+            
+            if (percentage >= 75) {
+                resultTitle = "¡Vanguardista en IA! 🏆";
+                resultDescription = "Tienes una comprensión avanzada del impacto de la IA y estás tomando medidas proactivas para posicionarte favorablemente. Continúa profundizando y manteniendo tu ventaja competitiva.";
+                progressColor = "bg-green-500";
+                document.getElementById('urgency-alert').classList.add('hidden');
+            } else if (percentage >= 50) {
+                resultTitle = "Preparación intermedia 💡";
+                resultDescription = "Reconoces la importancia de la IA pero hay áreas significativas para mejorar. Necesitas incrementar tu comprensión y aplicar más activamente este conocimiento para no quedarte atrás.";
+                progressColor = "bg-yellow-500";
+                document.getElementById('urgency-alert').textContent = "¡Necesitas actuar pronto!";
+            } else if (percentage >= 25) {
+                resultTitle = "En riesgo potencial ⚠️";
+                resultDescription = "Tu conocimiento y preparación sobre IA son limitados, lo que podría afectar seriamente tu futuro económico. Es crucial que empieces a formarte ahora para evitar quedarte atrás irreversiblemente.";
+                progressColor = "bg-orange-500";
+                document.getElementById('urgency-alert').classList.remove('hidden');
+            } else {
+                resultTitle = "Urgencia crítica 🔥";
+                resultDescription = "Te encuentras en peligro de quedar excluido del nuevo panorama económico dominado por la IA. Necesitas comenzar inmediatamente una formación intensiva para evitar consecuencias graves en tus ingresos y calidad de vida.";
+                progressColor = "bg-red-500";
+                document.getElementById('urgency-alert').classList.remove('hidden');
+            }
+            
+            document.getElementById('result-title').textContent = resultTitle;
+            document.getElementById('result-description').textContent = resultDescription;
+            document.getElementById('progress-fill').className = `h-4 rounded-full ${progressColor}`;
+            
+            // Generar áreas de mejora
+            const improvementAreas = [];
+            
+            if (percentage < 85) {
+                improvementAreas.push("Profundizar en la aplicación práctica de IA en tu sector");
+            }
+            
+            if (percentage < 70) {
+                improvementAreas.push("Desarrollar habilidades técnicas complementarias");
+                improvementAreas.push("Crear un plan de aprendizaje estructurado sobre IA");
+            }
+            
+            if (percentage < 50) {
+                improvementAreas.push("Identificar cómo la IA afectará específicamente tus ingresos");
+                improvementAreas.push("Explorar nuevas oportunidades de negocio habilitadas por IA");
+            }
+            
+            if (percentage < 30) {
+                improvementAreas.push("Adquirir conocimientos básicos urgentemente");
+                improvementAreas.push("Buscar mentores o redes profesionales en IA");
+            }
+            
+            const improvementList = document.getElementById('improvement-areas');
+            improvementList.innerHTML = '';
+            improvementAreas.forEach(area => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start';
+                li.innerHTML = `
+                    <span class="text-blue-500 mr-2 mt-1">•</span>
+                    <span>${area}</span>
+                `;
+                improvementList.appendChild(li);
+            });
+            
+            // Generar acciones recomendadas
+            const actionSteps = [
+                {
+                    title: "📅 Plan de aprendizaje",
+                    description: "Dedica 5 horas semanales específicas a estudiar IA",
+                    urgency: percentage < 70
+                },
+                {
+                    title: "🤝 Networking",
+                    description: "Conecta con 3 profesionales en IA este mes",
+                    urgency: percentage < 70
+                },
+                {
+                    title: "🛠️ Implementación",
+                    description: "Identifica 1 proceso en tu trabajo que pueda automatizarse con IA",
+                    urgency: percentage < 85
+                },
+                {
+                    title: "🚨 Evaluación de riesgo",
+                    description: "Analiza cómo afectará la IA a tus fuentes de ingresos",
+                    urgency: percentage < 50
+                },
+                {
+                    title: "💰 Diversificación",
+                    description: "Explora al menos 1 oportunidad de ingreso relacionada con IA",
+                    urgency: percentage < 60
+                },
+                {
+                    title: "📚 Educación formal",
+                    description: "Date de alta en un curso especializado este trimestre",
+                    urgency: percentage < 30
+                }
+            ];
+            
+            const actionContainer = document.getElementById('action-steps');
+            actionContainer.innerHTML = '';
+            
+            actionSteps.forEach((action, index) => {
+                if (index < 4 || action.urgency) { // Mostrar solo las más relevantes o urgentes
+                    const actionElement = document.createElement('div');
+                    actionElement.className = 'bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all';
+                    actionElement.innerHTML = `
+                        <h4 class="font-semibold mb-2 flex items-center">
+                            <span class="text-xl mr-2">${action.title.split(' ')[0]}</span>
+                            ${action.title.split(' ').slice(1).join(' ')}
+                        </h4>
+                        <p class="text-gray-600">${action.description}</p>
+                    `;
+                    actionContainer.appendChild(actionElement);
+                }
+            });
+            
+            // Generar recursos recomendados
+            const resources = [
+                { name: "Coursera: AI For Everyone", url: "https://www.coursera.org/learn/ai-for-everyone" },
+                { name: "Libro: 'AI Superpowers' - Kai-Fu Lee", url: "https://www.amazon.com/AI-Superpowers-China-Silicon-Valley/dp/132854639X" },
+                { name: "Google AI Resources", url: "https://ai.google/education/" },
+                { name: "YouTube: Crash Course AI", url: "https://www.youtube.com/playlist?list=PL8dPuuaLjXtO65LeD2p4_Sb5XQ51par_b" }
+            ];
+            
+            const resourcesContainer = document.getElementById('resources');
+            resourcesContainer.innerHTML = '';
+            
+            resources.forEach(resource => {
+                const resourceElement = document.createElement('div');
+                resourceElement.className = 'flex items-center';
+                resourceElement.innerHTML = `
+                    <a href="${resource.url}" target="_blank" class="text-blue-600 hover:text-blue-800 hover:underline flex items-center">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        ${resource.name}
+                    </a>
+                `;
+                resourcesContainer.appendChild(resourceElement);
+            });
+        }
+
+        // Reiniciar cuestionario
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            score = 0;
+            
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            showQuestion();
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            // Agregar efecto hover a las opciones
+            document.addEventListener('mouseover', (e) => {
+                if (e.target.closest('#options-container > div')) {
+                    e.target.closest('#options-container > div').classList.add('scale-up');
+                }
+            });
+            
+            document.addEventListener('mouseout', (e) => {
+                if (e.target.closest('#options-container > div')) {
+                    e.target.closest('#options-container > div').classList.remove('scale-up');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
